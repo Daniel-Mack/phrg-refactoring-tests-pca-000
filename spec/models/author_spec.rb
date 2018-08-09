@@ -2,24 +2,20 @@ require 'rails_helper'
 
 RSpec.describe Author, type: :model do
   it "is valid" do
-    author = Author.new(name: "Caligula", phone_number: 5553054425)
-    expect(author).to be_valid
+    expect(build(:author)).to be_valid
   end
 
   it "is invalid with no name" do
-    author = Author.new(phone_number: 5553054425)
-    expect(author).to be_invalid
+    expect(build(:author, name: "")).to be_invalid
   end
 
   it "is invalid with a short number" do
-    author = Author.new(name: "Caligula", phone_number: 555305442)
-    expect(author).to be_invalid
+    expect(build(:author, phone_number: 123)).to be_invalid
   end
 
   it "is invalid when non-unique" do
-    Author.create(name: "Caligula", phone_number: 5553054425)
-    author = Author.new(name: "Caligula", phone_number: 5557890001)
-    expect(author).to be_invalid
+  create(:author, name: "Bob", phone_number: "1111111111")
+  expect(build(:author, name: "Bob", phone_number: "1111111112")).to be_invalid
   end
 
   it "has a valid factory" do
